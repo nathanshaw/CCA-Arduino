@@ -45,8 +45,12 @@ void draw() {
   float t = mov[mov_index].duration() * f;
   
   mov[mov_index].play();
-  mov[mov_index].jump(t);
-  mov[mov_index].pause();
-  
+  //mov[mov_index].jump(t);
+  scale(0.25);
   image(mov[mov_index], 0, 0);
+  
+  mov[1].read();
+  mov[1].play();
+  //mov[1].jump(t);
+  image(mov[1], width, height);
 }
