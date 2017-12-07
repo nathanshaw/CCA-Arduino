@@ -64,6 +64,7 @@ void displayHelpText() {
   text("i - toggle color inversion", 20, bHeight + 60); 
   text("b - toggle background subtraction", 20, bHeight + 80); 
   text("m - change input mode from RGB, to depth, to colored depth", 20, bHeight + 100);
+  text("PLEASE NOTE: the blob detection is expecting blobs to be white", 20, bHeight + 120);
 }
 
 void displayBlobs() {

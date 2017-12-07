@@ -67,21 +67,6 @@ class Blob {
     // println(""+id, r.x + (r.width/2), r.y + (r.height/2));
   }
   
-  /*
-  // Show me
-  void display() {
-    Rectangle r = contour.getBoundingBox();
-
-    float opacity = map(timer, 0, initTimer, 0, 127);
-    fill(0, 0, 255, opacity);
-    stroke(0, 0, 255);
-    rect(r.x, r.y, r.width, r.height);
-    fill(255, 2*opacity);
-    textSize(26);
-    text(""+id, r.x+10, r.y+30);
-  }
-  */
-  
   // Give me a new contour for this blob (shape, points, location, size)
   // Oooh, it would be nice to lerp here!
   void update(Contour newC) {

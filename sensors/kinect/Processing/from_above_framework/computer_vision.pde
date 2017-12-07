@@ -2,7 +2,7 @@ PImage preProcessImage(PImage src) {
   /*
   load src into opencv
   greyscale image
-  apply brightness
+  background subtraction (or not)
   apply contrast
   invent (or not)
   return opencv snapshot
@@ -12,33 +12,35 @@ PImage preProcessImage(PImage src) {
 
   // reduce image down to greyscale then apply brightness and contrast
   opencv.gray();
-  opencv.brightness(brightness);
+  
+  ////////////// BACKGROUND SUBTRACT /////////////////////
+  if (backgroundSub == true) {
+    opencv.updateBackground();
+  }
   opencv.contrast(contrast);
 
   if (invertColors == true) {
     opencv.invert(); // Invert (black bg, white blobs)
   }
-
   return opencv.getSnapshot();   // return the current state of openCV
 }
 
 PImage processImage() {
   /*
-  Update background (or not)
   dilate and erode (helps with contour and blob detection
   Apply opencv thresholds
   Blur
   Apply thresholds
   */
-  ////////////// BACKGROUND SUBTRACT /////////////////////
-  if (backgroundSub == true) {
-    opencv.updateBackground();
-  }
   opencv.dilate();
   opencv.erode();
 
   // Blur
   opencv.blur(blurSize);
+
+  if (useInRange) {
+     opencv.inRange(inRangeMin, inRangeMax);
+  }
 
   // Adaptive threshold - Good when non-uniform illumination
   if (useAdaptiveThreshold) {
@@ -50,18 +52,16 @@ PImage processImage() {
   } else {
     opencv.threshold(threshold);
   }
-  /*
-    // thresholding
-  int[] rawDepth = kinect.getRawDepth();
-  for (int i=0; i < rawDepth.length; i++) {
-    if (rawDepth[i] >= minDepth && rawDepth[i] <= maxDepth) {
-      thresholdImage.pixels[i] = rawDepth[i];
-    } else {
-      thresholdImage.pixels[i] = color(0);
-    }
-  }
-  thresholdImage.updatePixels();
-  */
-
   return opencv.getSnapshot();
+}
+
+PImage addFrame(PImage srcImg) {
+   PImage returnImage = new PImage(srcImg.width+10, srcImg.height+10);
+   // draw a 4 pixel black frame around the image
+   for (int w = 3; w < returnImage.width-3; w++){
+     for (int h = 3; h < returnImage.height-3; h++) {
+        returnImage.pixels[w+(h*width)] = srcImg.pixels[w-3+(h*width)];
+     }
+   }
+   return returnImage;
 }

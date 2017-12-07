@@ -2,11 +2,18 @@
  * Framework created by Nathan Villicana-Shaw for Academic use at the California College of the Arts
  * in the fall of 2017
  *
+ * TODO try to hack the input image to open CV by adding a back boarder around the image
+ * this way it will be able to detect contours at the edge of the image - NEEDS TESTING
+ * TODO make sure than the image is white and the background is black for find contours
  * TODO add in kinect thesholding GUI and functionality 
- * TODO add toggle for background detection
  * TODO figure out a way to deal with when kinect depth cam returns "black" instead blend it !!!!
  * TODO use centroid of contours instead of center of rects as center of "blobs"
  * TODO make it so blobs can exist without being a compleatly contained contour
+ * TODO add toggle for equalizeHistogram() function to scale a greyscale image to fully encompas 0-255 range
+ * TODO experiment with values for initialization of background subtraction
+ * NOTE the openCV function pointToPVentor() is useful to convert a openCV point to a Processing PVeector
+ *
+ * https://atduskgreg.github.io/opencv-processing/reference/gab/opencv/OpenCV.html#inRange(int, int)
  */
  
 import org.openkinect.freenect.*;
@@ -18,7 +25,7 @@ import controlP5.*;
 Kinect kinect;
 OpenCV opencv;
 
-PImage src, preProcessedImage, processedImage, contoursImage, thresholdImage, whiteImg;
+PImage src, preProcessedImage, processedImage, contoursImage, whiteImg;
 
 ///////////////////// contours ///////////////////
 ArrayList<Contour> contours;
@@ -31,7 +38,6 @@ int blobCount = 0; // Number of blobs detected over all time. Used to set IDs.
 
 //////////// filtering and processing ////////////
 float contrast = 1.35;
-int brightness = 0;
 int threshold = 75;// thresholds
 boolean useAdaptiveThreshold = false; // use basic thresholding
 int thresholdBlockSize = 489;
@@ -41,8 +47,7 @@ int blurSize = 20;
 
 //////////////////////  GUI    ////////////////////
 ControlP5 cp5;
-int buttonColor;
-int buttonBgColor;
+int buttonColor, buttonBgColor;
 boolean helpText = true; // help text?
 
 ////////////////////// Kinect /////////////////////
@@ -57,6 +62,9 @@ int srcMode = 1; // what mode to use? 0 = raw RGB, 1 = raw IR, 2 = raw depth, 3 
 String srcText = "RGB Camera";
 boolean invertColors = false;  //invert colors in openCV?
 boolean backgroundSub = false; // do we try to subtract the background?
+boolean useInRange = false;
+int inRangeMin = 0;
+int inRangeMax = 255;
 
 
 void setup() {
@@ -70,9 +78,9 @@ void setup() {
 
   cp5 = new ControlP5(this);  // Init GUI Controls
   initControls();
-
+  // kinect image is 640x480 but we are adding a 4 pixel frame for a total of 8 added width and height
   opencv = new OpenCV(this, 640, 480);
-  opencv.startBackgroundSubtraction(5, 3, 0.5);
+  opencv.startBackgroundSubtraction(10, 3, 0.5); // history, nMixtures, background ratio
   opencv.loadImage(kinect.getDepthImage());
   opencv.updateBackground();
   toggleAdaptiveThreshold(useAdaptiveThreshold); // Set thresholding
@@ -80,28 +88,26 @@ void setup() {
   contours = new ArrayList<Contour>(); // contours array
   blobList = new ArrayList<Blob>();    // Blobs array
 
-  thresholdImage = new PImage(kinect.width, kinect.height);
   whiteImg = new PImage(kinect.width, kinect.height); // Blank image
   for (int i = 0; i < kinect.height * kinect.width; i++) {
     whiteImg.pixels[i] = color(255);
   }
 }
 
-
 void draw() {
   // depending on the mode, we either use the RGB camera or the
-  /// depth camera as the input to OpenCV
+  // depth camera as the input to OpenCV
   if (srcMode == 0) {
     src = kinect.getVideoImage();
   } else if (srcMode > 0) {
     src = kinect.getDepthImage();
   } 
- 
   // PROCESSING
   preProcessedImage = preProcessImage(src);
   processedImage = processImage();
-  detectBlobs();  // FIND CONTOURS and BLOBS  
+  detectBlobs();  // FIND CONTOURS and BLOBS, note that the blobs are stored in a global list blobList
   contours = opencv.findContours(true, true);  // Passing 'true' sorts them by descending area.
+  
   // DISPLAY
   mainDisplay();
   projectorDisplay();
