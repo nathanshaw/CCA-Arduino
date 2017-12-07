@@ -63,6 +63,7 @@ String srcText = "RGB Camera";
 boolean invertColors = false;  //invert colors in openCV?
 boolean backgroundSub = false; // do we try to subtract the background?
 boolean useInRange = false;
+boolean useHistogramEqual = false;
 int inRangeMin = 0;
 int inRangeMax = 255;
 

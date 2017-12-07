@@ -57,14 +57,16 @@ void displayImages() {
 
 void displayHelpText() {
   noStroke();
-  fill(255, 78, 90);
+  textSize(12);
+  fill(255, 120, 190);
   int bHeight = kinect.height;
   text("h - toggle help text", 20, bHeight + 20);
   text("c - toggle display of contours", 20, bHeight + 40); 
-  text("i - toggle color inversion", 20, bHeight + 60); 
+  //text("i - toggle color inversion", 20, bHeight + 60); 
   text("b - toggle background subtraction", 20, bHeight + 80); 
   text("m - change input mode from RGB, to depth, to colored depth", 20, bHeight + 100);
-  text("PLEASE NOTE: the blob detection is expecting blobs to be white", 20, bHeight + 120);
+  //text("e - toggle equalizeHistogram() to maximize the dynamic range of img", 20, bHeight + 120);
+  text("PLEASE NOTE: the blob detection is expecting blobs to be white", 20, bHeight + 140);
 }
 
 void displayBlobs() {

@@ -70,6 +70,26 @@ void initControls() {
     .setRange(1, 255)
     ;  
 
+  // Toggle for HistogramEqualize
+  cp5.addToggle("useHistogramEqual")
+    .setLabel("use equalizeHistogram()")
+    .setSize(10, 10)
+    .setPosition(20, 410)
+    ;
+    
+  // Toggle for color invert
+  cp5.addToggle("invertColors")
+    .setLabel("use invertColors()")
+    .setSize(10, 10)
+    .setPosition(20, 430)
+    ;
+    
+      // Toggle for background subtraction
+  cp5.addToggle("backgroundSub")
+    .setLabel("use backgroundSub()")
+    .setSize(10, 10)
+    .setPosition(20, 460)
+    ;
   // Store the default background color, we gonna need it later
   buttonColor = cp5.getController("contrast").getColor().getForeground();
   buttonBgColor = cp5.getController("contrast").getColor().getBackground();

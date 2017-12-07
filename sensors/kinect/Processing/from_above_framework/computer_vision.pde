@@ -13,6 +13,10 @@ PImage preProcessImage(PImage src) {
   // reduce image down to greyscale then apply brightness and contrast
   opencv.gray();
   
+  if (useHistogramEqual) {
+   opencv.equalizeHistogram(); 
+  }
+  
   ////////////// BACKGROUND SUBTRACT /////////////////////
   if (backgroundSub == true) {
     opencv.updateBackground();
