@@ -2,25 +2,28 @@
  * Framework created by Nathan Villicana-Shaw for Academic use at the California College of the Arts
  * in the fall of 2017
  *
- * TODO try to hack the input image to open CV by adding a back boarder around the image
- * this way it will be able to detect contours at the edge of the image - NEEDS TESTING
+ * Group TODO
+ * //////////////////
+ * 
+ * NATHAN'S TODO
+ * ///////////////////
  * TODO make sure than the image is white and the background is black for find contours
  * TODO add in kinect thesholding GUI and functionality 
  * TODO figure out a way to deal with when kinect depth cam returns "black" instead blend it !!!!
  * TODO use centroid of contours instead of center of rects as center of "blobs"
  * TODO make it so blobs can exist without being a compleatly contained contour
- * TODO add toggle for equalizeHistogram() function to scale a greyscale image to fully encompas 0-255 range
  * TODO experiment with values for initialization of background subtraction
  * NOTE the openCV function pointToPVentor() is useful to convert a openCV point to a Processing PVeector
  *
  * https://atduskgreg.github.io/opencv-processing/reference/gab/opencv/OpenCV.html#inRange(int, int)
  */
- 
+
 import org.openkinect.freenect.*;
 import org.openkinect.processing.*;
 import gab.opencv.*;
 import java.awt.Rectangle;
 import controlP5.*;
+import processing.sound.*;
 
 Kinect kinect;
 OpenCV opencv;
@@ -63,15 +66,18 @@ String srcText = "RGB Camera";
 boolean invertColors = false;  //invert colors in openCV?
 boolean backgroundSub = false; // do we try to subtract the background?
 boolean useInRange = false;
-boolean useHistogramEqual = false;
+boolean useHistogramEqual = true;
 int inRangeMin = 0;
 int inRangeMax = 255;
+boolean useAddBorder = true;
 
+////// AUDIO ///////////
+SoundFile[] soundfiles = new SoundFile[4];
 
 void setup() {
   frameRate(15);
   size(840, 960, P2D);
-  
+
   kinect = new Kinect(this); // Init kinect sensor
   kinect.initVideo();
   kinect.initDepth();
@@ -85,13 +91,23 @@ void setup() {
   opencv.loadImage(kinect.getDepthImage());
   opencv.updateBackground();
   toggleAdaptiveThreshold(useAdaptiveThreshold); // Set thresholding
-  
+
   contours = new ArrayList<Contour>(); // contours array
   blobList = new ArrayList<Blob>();    // Blobs array
 
   whiteImg = new PImage(kinect.width, kinect.height); // Blank image
   for (int i = 0; i < kinect.height * kinect.width; i++) {
     whiteImg.pixels[i] = color(255);
+  }
+
+  ////Audio///
+  soundfiles[0] = new SoundFile(this, "c-loop.wav");
+  soundfiles[1] = new SoundFile(this, "e-loop.wav");
+  soundfiles[2] = new SoundFile(this, "g-loop.wav");
+  soundfiles[3] = new SoundFile(this, "vibraphon.aiff");
+
+  for (SoundFile soundfile : soundfiles) {
+    soundfile.loop();
   }
 }
 
@@ -108,8 +124,30 @@ void draw() {
   processedImage = processImage();
   detectBlobs();  // FIND CONTOURS and BLOBS, note that the blobs are stored in a global list blobList
   contours = opencv.findContours(true, true);  // Passing 'true' sorts them by descending area.
-  
+
   // DISPLAY
   mainDisplay();
   projectorDisplay();
+
+  playAudio();
 }
+/*
+  //AUDIO//
+ // NEW - we need to ensure that we have at least one blob in the list or else
+ // this will throw an error
+ if (blobList.size() > 0) {
+ //for (int i = 0; i < soundfiles.length; i++) {
+ for (int i = 0; i < blobList.size(); i++) {
+ // want to make sure that there is a soundfile which coresponds to the blob.
+ if (i < soundfiles.length) {
+ float x = blobList.get(i).pos.x;
+ float y = blobList.get(i).pos.y;
+ soundfiles[i].rate(map(x, 0, width, 0.5, 2.0));  
+ soundfiles[i].amp(map(y, 0, height, 0.2, 1.0));
+ if (soundfiles[i].channels() == 1) {
+ soundfiles[i].pan(map(y, 0, height, -1.0, 1.0));
+ }
+ }
+ }
+ }
+ */

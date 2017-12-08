@@ -63,10 +63,11 @@ void displayHelpText() {
   text("h - toggle help text", 20, bHeight + 20);
   text("c - toggle display of contours", 20, bHeight + 40); 
   //text("i - toggle color inversion", 20, bHeight + 60); 
-  text("b - toggle background subtraction", 20, bHeight + 80); 
-  text("m - change input mode from RGB, to depth, to colored depth", 20, bHeight + 100);
+  text("b - toggle background subtraction", 20, bHeight + 60); 
+  text("m - change input mode from RGB, to depth, to colored depth", 20, bHeight + 80);
   //text("e - toggle equalizeHistogram() to maximize the dynamic range of img", 20, bHeight + 120);
-  text("PLEASE NOTE: the blob detection is expecting blobs to be white", 20, bHeight + 140);
+  text("PLEASE NOTE: the blob detection is expecting blobs to be white", 20, bHeight + 100);
+  text("UP and DOWN will control the tilt of the Kinect (sometimes)", 20, bHeight + 120);
 }
 
 void displayBlobs() {
@@ -140,8 +141,10 @@ void projectorDisplay() {
       for (int t = 0; t < blobList.size(); t++) {
         line(blobList.get(i).pos.x, blobList.get(i).pos.y, 
           blobList.get(t).pos.x, blobList.get(t).pos.y);
-        println(dist(blobList.get(i).pos.x, blobList.get(i).pos.y, 
+        /*
+          println(dist(blobList.get(i).pos.x, blobList.get(i).pos.y, 
           blobList.get(t).pos.x, blobList.get(t).pos.y));
+        */
       }
     }
   }

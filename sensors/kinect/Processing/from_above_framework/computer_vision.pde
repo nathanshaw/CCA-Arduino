@@ -1,22 +1,22 @@
 PImage preProcessImage(PImage src) {
   /*
   load src into opencv
-  greyscale image
-  background subtraction (or not)
-  apply contrast
-  invent (or not)
-  return opencv snapshot
-  */
+   greyscale image
+   background subtraction (or not)
+   apply contrast
+   invent (or not)
+   return opencv snapshot
+   */
   // Load the new frame of our camera in to OpenCV
   opencv.loadImage(src);
 
   // reduce image down to greyscale then apply brightness and contrast
   opencv.gray();
-  
+
   if (useHistogramEqual) {
-   opencv.equalizeHistogram(); 
+    opencv.equalizeHistogram();
   }
-  
+
   ////////////// BACKGROUND SUBTRACT /////////////////////
   if (backgroundSub == true) {
     opencv.updateBackground();
@@ -32,10 +32,10 @@ PImage preProcessImage(PImage src) {
 PImage processImage() {
   /*
   dilate and erode (helps with contour and blob detection
-  Apply opencv thresholds
-  Blur
-  Apply thresholds
-  */
+   Apply opencv thresholds
+   Blur
+   Apply thresholds
+   */
   opencv.dilate();
   opencv.erode();
 
@@ -43,7 +43,7 @@ PImage processImage() {
   opencv.blur(blurSize);
 
   if (useInRange) {
-     opencv.inRange(inRangeMin, inRangeMax);
+    opencv.inRange(inRangeMin, inRangeMax);
   }
 
   // Adaptive threshold - Good when non-uniform illumination
@@ -56,16 +56,21 @@ PImage processImage() {
   } else {
     opencv.threshold(threshold);
   }
+  if (useAddBorder) {
+    opencv.loadImage(addBorder(opencv.getSnapshot()));
+  }
   return opencv.getSnapshot();
 }
 
-PImage addFrame(PImage srcImg) {
-   PImage returnImage = new PImage(srcImg.width+10, srcImg.height+10);
-   // draw a 4 pixel black frame around the image
-   for (int w = 3; w < returnImage.width-3; w++){
-     for (int h = 3; h < returnImage.height-3; h++) {
-        returnImage.pixels[w+(h*width)] = srcImg.pixels[w-3+(h*width)];
-     }
-   }
-   return returnImage;
+PImage addBorder(PImage srcImg) {
+  for (int w = 0; w < srcImg.width; w++) {
+    for (int h = 0; h < srcImg.height; h++) {
+      if (w < 2 || h < 2 || w > src.width-3 || h > src.height-3) {
+        int loc = w + (h*srcImg.width);
+        println(w, " ", h, " ", loc);
+        srcImg.pixels[loc] = color(255);
+      }
+    }
+  }
+  return srcImg;
 }

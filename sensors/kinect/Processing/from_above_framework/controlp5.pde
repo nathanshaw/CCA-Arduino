@@ -42,7 +42,7 @@ void initControls() {
   cp5.addSlider("blurSize")
     .setLabel("blur size")
     .setPosition(20, 260)
-    .setRange(0, 120)
+    .setRange(1, 120)
     ;
 
   // Slider for minimum blob size
@@ -76,19 +76,26 @@ void initControls() {
     .setSize(10, 10)
     .setPosition(20, 410)
     ;
-    
+
   // Toggle for color invert
   cp5.addToggle("invertColors")
     .setLabel("use invertColors()")
     .setSize(10, 10)
     .setPosition(20, 430)
     ;
-    
-      // Toggle for background subtraction
+
+  // Toggle for background subtraction
   cp5.addToggle("backgroundSub")
     .setLabel("use backgroundSub()")
     .setSize(10, 10)
     .setPosition(20, 460)
+    ;
+
+  // Toggle for background subtraction
+  cp5.addToggle("useAddBorder")
+    .setLabel("use addBorder()")
+    .setSize(10, 10)
+    .setPosition(20, 490)
     ;
   // Store the default background color, we gonna need it later
   buttonColor = cp5.getController("contrast").getColor().getForeground();
