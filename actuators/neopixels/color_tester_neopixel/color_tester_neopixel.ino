@@ -1,5 +1,5 @@
 #include <Adafruit_NeoPixel.h>
-#define PIN 2
+#define PIN 7
 
 // Parameter 1 = number of pixels in strip
 // Parameter 2 = Arduino pin number (most are valid)
@@ -97,3 +97,14 @@ uint32_t Wheel(byte WheelPos) {
   WheelPos -= 170;
   return strip.Color(WheelPos * 3, 255 - WheelPos * 3, 0);
 }
+
+void serialEvent() {
+  while(Serial.available()) {
+    if (Serial.read() == 0xFF) {
+      Serial.readBytes(hue, 1);
+        colorWipe(hue, 5);
+    }
+  }
+}
+
+
