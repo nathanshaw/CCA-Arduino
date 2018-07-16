@@ -1,7 +1,7 @@
 /*
   Code for reading the input from multiple softpots.
-
   Please note that you must use a Analog pin to read a softpot 
+
   Coded by Nathan Villicana-Shaw for the California College of the Arts in 2018
 
   ######## Wiring ##############3
@@ -11,7 +11,7 @@
  
   PLEASE NOTE:
   The softpot needs to have a pull-up or pull-down resistor connected to the Analog Pin
-  As when the softpot is not being pressed a short circuit is formed
+  As when the softpot is not being pressed a short circuit is formed. 10k is an appropiate value.
 */
 
 const int soft_pot_pins[] = [A3, A4, A5];

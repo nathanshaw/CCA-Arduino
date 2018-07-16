@@ -6,7 +6,7 @@
  
  PLEASE NOTE:
  The FSR needs to have a pull-up or pull-down resistor which is connected to the same node 
- as the Arduinos fsr_pin
+ as the Arduinos fsr_pin. 10k is an appropiate value.
  
  */
 

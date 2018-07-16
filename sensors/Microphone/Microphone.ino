@@ -1,16 +1,24 @@
 /*
   Code for reading the input from a Microphone
  
- Programmed by Nathan Villicana-Shaw in the Fall of 2017 for 
- the California College of the Arts Interaction Design department.
- 
- */
-// A0 is the microphone input pin
-const unsigned long sampleWindow = 100; // Sample window width in mS (50 mS = 20Hz)
+    Programmed by Nathan Villicana-Shaw in the Fall of 2017 for 
+    the California College of the Arts Interaction Design department.
+
+  ####### PLEASE NOTE ##################
+  The arduino does not run fast enough to really use microphone inputs for much besides
+  detecting loud noises. The signal tends to be noisy and needs lots of filtering to be usable.
+
+  Also note that when the microphone is pulling data in the ReturnMicrophoneAmp 
+  funciton the rest of the program is haulted.
+
+*/
+const unsigned long sampleWindow = 250; // Sample window width in mS (250 ms = 4Hz)
 unsigned int sample;
+const int mic_pin = A0;
 
 void setup() 
 {
+   pinMode(mic_pin, INPUT); 
    Serial.begin(57600);
 }
 
@@ -24,7 +32,7 @@ double returnMicrophoneAmp() {
    // collect data for sampleWindow ms
    while (millis() - startMillis < sampleWindow)
    {
-      sample = analogRead(0);
+      sample = analogRead(mic_pin);
       if (sample < 1024)  // toss out spurious readings
       {
          if (sample > signalMax)
