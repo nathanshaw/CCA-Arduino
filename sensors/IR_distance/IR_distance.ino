@@ -27,14 +27,14 @@ const int ir_pin = A0;
 const unsigned long polling_delay = 30; // the number of ms between readings
 unsigned long last_poll = 0; // the last time the IR sensor was read in ms
 
-int ir_reading = 0; // what is the current reading of the ir sensor?
-int last_reding = 0; // what was the last reading?
+int ir_val = 0; // what is the current reading of the ir sensor?
+int last_val = 0; // what was the last reading?
 
 boolean smooth = true;
 
 
 void setup() {
-  pinMode(fsr_pin, INPUT);
+  pinMode(ir_pin, INPUT);
   Serial.begin(57600);
 }
 
@@ -42,12 +42,12 @@ void setup() {
 void loop() {
   unsigned long now = millis();
   if (now > last_poll + polling_delay) {
-    last_reading = ir_reading;
-    ir_reading = analogRead(ir_pin);
+    last_val = ir_val;
+    ir_val = analogRead(ir_pin);
     if (smooth == true) {
-      ir_reading = int((last_reading + ir_reading) * 0.5);
+      ir_val = int((last_val + ir_val) * 0.5);
     }
-    Serial.println(ir_reading);
+    Serial.println(ir_val);
     last_poll = now;
   }
 }

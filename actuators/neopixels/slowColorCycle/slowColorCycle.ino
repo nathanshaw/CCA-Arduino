@@ -3,7 +3,7 @@
   #include <avr/power.h>
 #endif
 
-#define PIN 7
+#define PIN 10
 
 // Parameter 1 = number of pixels in strip
 // Parameter 2 = Arduino pin number (most are valid)
@@ -21,19 +21,9 @@ Adafruit_NeoPixel strip = Adafruit_NeoPixel(50, PIN, NEO_GRB + NEO_KHZ800);
 // on a live circuit...if you must, connect GND first.
 
 void setup() {
-  // This is for Trinket 5V 16MHz, you can remove these three lines if you are not using a Trinket
-  #if defined (__AVR_ATtiny85__)
-    if (F_CPU == 16000000) clock_prescale_set(clock_div_1);
-  #endif
-  // End of trinket special code
   strip.begin();
   strip.show(); // Initialize all pixels to 'off'
   strip.setBrightness(70);
-}
-
-void loop() {
-  // slowly cycle through all the colors
-  rainbow(2000);
 }
 
 // Fill the dots one after the other with a color
@@ -90,4 +80,9 @@ uint32_t Wheel(byte WheelPos) {
   }
   WheelPos -= 170;
   return strip.Color(WheelPos * 3, 255 - WheelPos * 3, 0);
+}
+
+void loop() {
+  // slowly cycle through all the colors
+  rainbow(500);
 }

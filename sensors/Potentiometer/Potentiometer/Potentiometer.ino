@@ -9,7 +9,7 @@
   and the pin on the right to 5V
 */
 
-const int pot_pin = A4;
+const int pot_pin = A0;
 // the number of ms between readings. please note 1000 ms = 1 second
 const unsigned long polling_delay = 30;
 unsigned long last_poll = 0; // the last time the pot was read

@@ -9,11 +9,11 @@
   and the pin on the right to 5V
 */
 
-const int pot_pins[] = [A3, A4, A5];
+const int pot_pins[] = {A3, A4, A5};
 // the number of ms between readings. please note 1000 ms = 1 second
-const unsigned long polling_delay = 30;
+const polling_delay = 30;
 unsigned long last_poll = 0; // the last time the pots were read
-int pot_vals[] = [0,0,0]; // to keep track of our readings
+int pot_vals[] = {0,0,0}; // to keep track of our readings
 
 void printValues() {
     /* Prints out the values of the pots */
