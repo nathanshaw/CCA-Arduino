@@ -11,10 +11,10 @@
  as the Arduinos but_pin. 10k is an appropiate value.
  */
 
-const int but_pin = 3;
+const int but_pin = 13;
 
 // to keep track of time
-const unsigned long polling_delay = 30; // the number of ms between readings
+const unsigned long polling_delay = 50; // the number of ms between readings
 unsigned long last_poll = 0; // the last time the soft pot was read
 
 int but_val = 0; // to keep track of the buttons reading

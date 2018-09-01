@@ -1,7 +1,7 @@
 /*
   Code for controlling a simple DC Motor with a potentiometer 
  
- Programmed by Nathan Villicana-Shaw in the Fall of 2017 for 
+ Programmed by Nathan Villicana-Shaw in the Fall of 2018 for 
  the California College of the Arts Interaction Design department.
 
  Please Note

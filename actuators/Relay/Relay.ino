@@ -3,7 +3,11 @@
  
  Programmed by Nathan Villicana-Shaw in the Fall of 2017 for 
  the California College of the Arts Interaction Design department.
- 
+
+ PLEASE NOTE
+ -----------
+ Most relays operate at a higher voltage than the Arduino can provide
+ Make sure to double check what your Relays "logic" level is
  */
 
 const int relay_pin = 13;

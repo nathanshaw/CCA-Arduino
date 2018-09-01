@@ -59,8 +59,6 @@ void setup()
 
   // Request first magnetometer single measurement
   I2CwriteByte(MAG_ADDRESS,0x0A,0x01);
-
-
 }
 
 

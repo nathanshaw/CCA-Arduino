@@ -1,3 +1,14 @@
+/*
+  Code for controlling a simple DC Motor with a potentiometer 
+ 
+ Programmed by Nathan Villicana-Shaw in the Fall of 2018 for 
+ the California College of the Arts Interaction Design department.
+
+ Please Note
+ ----------------
+ This program is intended for demoing a vibration motor but can work with any kind of motor
+ 
+*/
 
 // a constant integer to keep track of what pin the motor is connected to
 const int v_motor = 5;
